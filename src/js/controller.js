@@ -3,6 +3,7 @@ import { recipeView } from './views/recipeView.js';
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import { async } from 'regenerator-runtime';
 
 const recipeContainer = document.querySelector('.recipe');
 
@@ -14,9 +15,7 @@ const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
 
-    if (!id) {
-      return;
-    }
+    if (!id) return;
 
     recipeView.renderSpinner();
 
@@ -26,7 +25,8 @@ const controlRecipes = async function () {
     // 2 Renderizando a receita
     recipeView.render(model.state.recipe);
   } catch (err) {
-    console.log(err);
+    recipeView.renderError();
+    console.error(err);
   }
 };
 
