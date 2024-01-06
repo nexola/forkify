@@ -31,7 +31,16 @@ export default class View {
             <div class="preview__data">
                 <h4 class="preview__title">${result.title}</h4>
                 <p class="preview__publisher">${result.publisher}</p>
+                <div class="preview__user-generated ${
+                  result.key ? '' : 'hidden'
+                }">
+                <svg>
+                  <use href="${icons}svg#icon-user"></use>
+                </svg>
+              </div>
+              </div>
             </div>
+            
             </a>
         </li>`;
   }
@@ -98,14 +107,14 @@ export default class View {
 
   renderMessage(message = this._message) {
     const markup = `
-        <div class="message">
-          <div>
-            <svg>
-              <use href="${icons}#icon-smile></use>
-            </svg>
-          </div>
-          <p>${message}</p>
+      <div class="message">
+        <div>
+          <svg>
+            <use href="${icons}#icon-smile"></use>
+          </svg>
         </div>
+        <p>${message}</p>
+      </div>
     `;
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
