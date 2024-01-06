@@ -3,6 +3,7 @@ import { recipeView } from './views/recipeView.js';
 import { searchView } from './views/searchView.js';
 import { resultsView } from './views/resultsView.js';
 import { paginationView } from './views/paginationView.js';
+import { bookmarksView } from './views/bookmarksView.js';
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -25,11 +26,10 @@ const controlRecipes = async function () {
     recipeView.renderSpinner();
 
     resultsView.update(model.getSearchResultsPage());
+    bookmarksView.update(model.state.bookmarks);
 
-    // 1 Carregar API
     await model.loadRecipe(id);
 
-    // 2 Renderizando a receita
     recipeView.render(model.state.recipe);
   } catch (err) {
     recipeView.renderError();
@@ -39,10 +39,10 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
-    resultsView.renderSpinner();
-
     const query = searchView.getQuery();
     if (!query) return;
+
+    resultsView.renderSpinner();
 
     await model.loadSearchResults(query);
 
@@ -61,11 +61,8 @@ const controlPagination = function (goToPage) {
 };
 
 const controlServings = function (newServings) {
-  // Update the recipe servings (in state)
   model.updateServings(newServings);
 
-  // Update the recipe view
-  // recipeView.render(model.state.recipe);
   recipeView.update(model.state.recipe);
 };
 
@@ -75,6 +72,8 @@ const controlAddBookmark = function () {
     : model.addBookmark(model.state.recipe);
 
   recipeView.update(model.state.recipe);
+
+  bookmarksView.render(model.state.bookmarks);
 };
 
 const init = function () {
